@@ -1,0 +1,18 @@
+create extension if not exists pgcrypto;
+create table if not exists public.profiles(id uuid primary key references auth.users(id) on delete cascade,username text unique not null,display_name text,avatar_url text,rok_id text unique default('ROK-'||upper(substr(replace(gen_random_uuid()::text,'-',''),1,8))),role text not null default 'member' check(role in('member','event_admin','group_owner','founder')),created_at timestamptz not null default now());
+create table if not exists public.circles(id uuid primary key default gen_random_uuid(),name text not null,description text,tag text,owner_id uuid references public.profiles(id) on delete set null,member_count integer not null default 0,created_at timestamptz not null default now());
+create table if not exists public.circle_members(circle_id uuid references public.circles(id) on delete cascade,profile_id uuid references public.profiles(id) on delete cascade,joined_at timestamptz not null default now(),primary key(circle_id,profile_id));
+create table if not exists public.announcements(id uuid primary key default gen_random_uuid(),title text not null,content text not null,author_id uuid references public.profiles(id) on delete set null,pinned boolean not null default false,created_at timestamptz not null default now());
+create table if not exists public.messages(id uuid primary key default gen_random_uuid(),sender_id uuid references public.profiles(id) on delete set null,circle_id uuid references public.circles(id) on delete cascade,content text not null,created_at timestamptz not null default now());
+alter table public.profiles enable row level security;alter table public.circles enable row level security;alter table public.circle_members enable row level security;alter table public.announcements enable row level security;alter table public.messages enable row level security;
+drop policy if exists "public read circles" on public.circles;create policy "public read circles" on public.circles for select using(true);
+drop policy if exists "public read announcements" on public.announcements;create policy "public read announcements" on public.announcements for select using(true);
+drop policy if exists "authenticated read profiles" on public.profiles;create policy "authenticated read profiles" on public.profiles for select to authenticated using(true);
+drop policy if exists "authenticated read messages" on public.messages;create policy "authenticated read messages" on public.messages for select to authenticated using(true);
+drop policy if exists "authenticated insert messages" on public.messages;create policy "authenticated insert messages" on public.messages for insert to authenticated with check(auth.uid()=sender_id);
+do $$ begin alter publication supabase_realtime add table public.announcements; exception when duplicate_object then null; end $$;
+do $$ begin alter publication supabase_realtime add table public.circles; exception when duplicate_object then null; end $$;
+do $$ begin alter publication supabase_realtime add table public.messages; exception when duplicate_object then null; end $$;
+insert into public.circles(name,description,tag,member_count)select'Rokuhara Main','Circle utama Rokuhara Community.','MAIN',128 where not exists(select 1 from public.circles where name='Rokuhara Main');
+insert into public.circles(name,description,tag,member_count)select'Rokuhara Elite','Circle buat member aktif push bareng.','ELITE',64 where not exists(select 1 from public.circles where name='Rokuhara Elite');
+insert into public.circles(name,description,tag,member_count)select'Rokuhara Casual','Santai, mabar, dan cari teman baru.','CASUAL',91 where not exists(select 1 from public.circles where name='Rokuhara Casual');
