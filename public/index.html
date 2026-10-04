@@ -194,6 +194,59 @@
     </div>
   </div>
 
+  <div id="profileModal" class="modal hidden">
+    <div class="modal-box glass profile-box">
+      <button id="closeProfile" class="modal-close">×</button>
+
+      <span class="eyebrow">ROKUHARA PROFILE</span>
+      <div class="profile-avatar" id="profileAvatar">R</div>
+
+      <h2 id="profileName">Rokuhara Member</h2>
+      <p id="profileUsername">@username</p>
+
+      <div class="profile-id">
+        <span>ROKUHARA ID</span>
+        <strong id="profileRokId">#ROKUHARA</strong>
+      </div>
+
+      <p id="profileBio" class="profile-bio">
+        Belum ada bio.
+      </p>
+
+      <button id="editProfileBtn" class="secondary full">
+        Edit Profile
+      </button>
+
+      <div id="editProfileForm" class="edit-profile-form hidden">
+        <label>Display Name</label>
+        <input id="editDisplayName" type="text" maxlength="40" placeholder="Display name">
+
+        <label>Bio</label>
+        <textarea id="editBio" maxlength="160" rows="4" placeholder="Ceritain sedikit tentang lu..."></textarea>
+
+        <div class="actions">
+          <button id="saveProfileBtn" class="primary">Save Profile</button>
+          <button id="cancelProfileEdit" class="secondary">Cancel</button>
+        </div>
+      </div>
+
+      <div class="profile-meta">
+        <div>
+          <small>ROLE</small>
+          <strong id="profileRole">Member</strong>
+        </div>
+        <div>
+          <small>JOINED</small>
+          <strong id="profileJoined">-</strong>
+        </div>
+      </div>
+
+      <button id="profileLogout" class="secondary full">
+        Logout
+      </button>
+    </div>
+  </div>
+
   <div id="toast"></div>
 
   <footer>

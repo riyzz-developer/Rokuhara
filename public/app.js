@@ -63,7 +63,114 @@ function updateAuthUI(user, profile = null) {
       profile?.username ||
       user.email ||
       'Profile';
+
+    fillProfile(profile, user);
   }
+}
+
+function fillProfile(profile, user) {
+  if (!profile) return;
+
+  const name =
+    profile.display_name ||
+    profile.username ||
+    user?.email ||
+    'Rokuhara Member';
+
+  const username = profile.username || 'username';
+  const rokId = profile.rok_id || 'ROKUHARA';
+  const bio = profile.bio || 'Belum ada bio.';
+  const role = profile.role || 'member';
+
+  $('#profileName').textContent = name;
+  $('#profileUsername').textContent = `@${username}`;
+  $('#profileRokId').textContent = `#${rokId}`;
+  $('#profileBio').textContent = bio;
+
+  $('#profileRole').textContent = {
+    founder: 'Founder',
+    group_owner: 'Group Owner',
+    event_admin: 'Event Admin',
+    member: 'Member'
+  }[role] || 'Member';
+
+  $('#profileJoined').textContent = profile.created_at
+    ? new Date(profile.created_at).toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      })
+    : '-';
+
+  const initial = name.trim().charAt(0).toUpperCase() || 'R';
+  $('#profileAvatar').textContent = initial;
+}
+
+function openProfile() {
+  $('#profileModal').classList.remove('hidden');
+}
+
+function closeProfile() {
+  $('#profileModal').classList.add('hidden');
+}
+
+function openEditProfile() {
+  $('#editDisplayName').value =
+    $('#profileName').textContent || '';
+
+  const bio = $('#profileBio').textContent.trim();
+
+  $('#editBio').value =
+    bio === 'Belum ada bio.' ? '' : bio;
+
+  $('#editProfileForm').classList.remove('hidden');
+  $('#editProfileBtn').classList.add('hidden');
+}
+
+function cancelEditProfile() {
+  $('#editProfileForm').classList.add('hidden');
+  $('#editProfileBtn').classList.remove('hidden');
+}
+
+async function saveProfile() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    toast('Lu harus login dulu.');
+    return;
+  }
+
+  const displayName = $('#editDisplayName').value.trim();
+  const bio = $('#editBio').value.trim();
+
+  if (!displayName) {
+    toast('Display name wajib diisi.');
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({
+      display_name: displayName,
+      bio: bio || null
+    })
+    .eq('id', user.id)
+    .select('*')
+    .single();
+
+  if (error) {
+    console.error('Update profile error:', error);
+    toast(error.message);
+    return;
+  }
+
+  fillProfile(data, user);
+  updateAuthUI(user, data);
+
+  $('#editProfileForm').classList.add('hidden');
+  $('#editProfileBtn').classList.remove('hidden');
+
+  toast('Profile berhasil diperbarui!');
 }
 
 async function loadProfile(user) {
@@ -237,6 +344,20 @@ async function init() {
     await loadProfile(sessionState?.user || null);
   });
 }
+
+$('#profileBtn').onclick = openProfile;
+$('#closeProfile').onclick = closeProfile;
+$('#profileLogout').onclick = logout;
+
+$('#editProfileBtn').onclick = openEditProfile;
+$('#cancelProfileEdit').onclick = cancelEditProfile;
+$('#saveProfileBtn').onclick = saveProfile;
+
+$('#profileModal').addEventListener('click', (event) => {
+  if (event.target.id === 'profileModal') {
+    closeProfile();
+  }
+});
 
 $('#loginBtn').onclick = () => openAuth('login');
 $('#registerBtn').onclick = () => openAuth('register');

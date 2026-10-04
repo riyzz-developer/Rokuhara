@@ -86,6 +86,157 @@ img {
 }
 
 /* =========================
+   EDIT PROFILE
+========================= */
+
+.edit-profile-form {
+  margin: 18px 0;
+  text-align: left;
+}
+
+.edit-profile-form label {
+  display: block;
+  margin: 12px 0 7px;
+  color: #aaa4b4;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.edit-profile-form input,
+.edit-profile-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,.035);
+  color: #fff;
+  outline: none;
+  font: inherit;
+  resize: vertical;
+  transition: .2s ease;
+}
+
+.edit-profile-form input:focus,
+.edit-profile-form textarea:focus {
+  border-color: rgba(180,130,255,.55);
+  background: rgba(255,255,255,.05);
+}
+
+.edit-profile-form .actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-profile-form .actions button {
+  flex: 1;
+}
+
+@media (max-width: 600px) {
+  .edit-profile-form .actions {
+    flex-direction: column;
+  }
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-box {
+  width: min(440px, calc(100% - 32px));
+  text-align: center;
+  position: relative;
+}
+
+.profile-avatar {
+  width: 82px;
+  height: 82px;
+  margin: 18px auto 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--line);
+  color: #fff;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.profile-box h2 {
+  margin: 0;
+}
+
+.profile-box > p {
+  color: #8f899c;
+}
+
+.profile-id {
+  margin: 22px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,.035);
+}
+
+.profile-id span,
+.profile-meta small {
+  display: block;
+  color: #777080;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.profile-id strong {
+  display: block;
+  margin-top: 6px;
+  color: #d8c4f7;
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+
+.profile-bio {
+  margin: 18px 0;
+  line-height: 1.6;
+}
+
+.profile-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.profile-meta > div {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: rgba(255,255,255,.025);
+}
+
+.profile-meta strong {
+  display: block;
+  margin-top: 6px;
+  color: #ddd8e5;
+  font-size: 13px;
+}
+
+.profile-box .full {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .profile-box {
+    width: calc(100% - 24px);
+  }
+
+  .profile-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
    BACKGROUND ORBS
 ========================= */
 
