@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09080d">
   <title>Rokuhara — Free Fire Community</title>
   <meta name="description" content="Rokuhara Free Fire Circle Community">
   <link rel="icon" href="/assets/logo/rokhuhara-logo.png">
@@ -13,6 +14,7 @@
   <div class="orb orb-a"></div>
   <div class="orb orb-b"></div>
 
+  <!-- NAVBAR -->
   <header class="top glass">
     <a class="brand" href="#">
       <img src="/assets/logo/rokhuhara-logo.png" alt="Rokuhara">
@@ -20,8 +22,11 @@
     </a>
 
     <nav>
+      <a href="#home">Home</a>
       <a href="#circles">Circles</a>
-      <a href="#announcements">Announcements</a>
+      <a href="#recruitment">Recruitment</a>
+      <a href="#announcements">News</a>
+      <a href="#events">Events</a>
       <a href="#community">Community</a>
       <a href="#team">Team</a>
     </nav>
@@ -30,23 +35,32 @@
       <button id="loginBtn" class="ghost">Login</button>
       <button id="registerBtn" class="primary small">Register</button>
       <button id="profileBtn" class="ghost hidden">Profile</button>
+      <button id="settingsBtn" class="ghost hidden">Settings</button>
       <button id="logoutBtn" class="ghost hidden">Logout</button>
     </div>
   </header>
 
   <main>
-    <section class="hero">
+    <!-- HOME -->
+    <section id="home" class="hero">
       <div>
         <span class="eyebrow">FREE FIRE • CIRCLE • COMMUNITY</span>
-        <h1>Build your circle.<br><span>Play together.</span></h1>
+
+        <h1>
+          Build your circle.<br>
+          <span>Play together.</span>
+        </h1>
+
         <p>
-          Tempat komunitas Rokuhara buat cari Circle, recruitment,
-          announcement, dan mabar bareng.
+          Tempat komunitas Rokuhara buat cari Circle,
+          recruitment, event, announcement, dan mabar bareng.
         </p>
 
         <div class="actions">
           <a class="primary" href="#circles">Explore Circles</a>
-          <button id="heroRegister" class="secondary">Create Account</button>
+          <button id="heroRegister" class="secondary">
+            Create Account
+          </button>
         </div>
 
         <div class="status">
@@ -63,53 +77,190 @@
       </div>
     </section>
 
+    <!-- STATS -->
+    <section class="section stats-section">
+      <div class="stats-grid">
+        <article class="glass stat-card">
+          <span>MEMBERS</span>
+          <strong id="statMembers">0</strong>
+        </article>
+
+        <article class="glass stat-card">
+          <span>CIRCLES</span>
+          <strong id="statCircles">0</strong>
+        </article>
+
+        <article class="glass stat-card">
+          <span>RECRUITMENT</span>
+          <strong id="statRecruitments">0</strong>
+        </article>
+
+        <article class="glass stat-card">
+          <span>EVENTS</span>
+          <strong id="statEvents">0</strong>
+        </article>
+      </div>
+    </section>
+
+    <!-- CIRCLES -->
     <section id="circles" class="section">
       <div class="head">
         <div>
           <span class="eyebrow">COMMUNITY</span>
-          <h2>Featured Circles</h2>
+          <h2>Rokuhara Circles</h2>
         </div>
-        <button id="refresh" class="secondary">Refresh</button>
+
+        <button id="refreshCircles" class="secondary">
+          Refresh
+        </button>
       </div>
 
-      <div id="circlesGrid" class="grid"></div>
+      <div class="toolbar glass">
+        <input
+          id="circleSearch"
+          type="search"
+          placeholder="Cari Circle..."
+        >
+
+        <select id="circleFilter">
+          <option value="all">Semua Circle</option>
+          <option value="main">Main</option>
+          <option value="elite">Elite</option>
+          <option value="casual">Casual</option>
+        </select>
+      </div>
+
+      <div id="circlesGrid" class="grid">
+        <div class="loading glass">Loading circles...</div>
+      </div>
     </section>
 
+    <!-- RECRUITMENT -->
+    <section id="recruitment" class="section">
+      <div class="head">
+        <div>
+          <span class="eyebrow">LOOKING FOR MEMBERS</span>
+          <h2>Circle Recruitment</h2>
+        </div>
+
+        <button id="refreshRecruitments" class="secondary">
+          Refresh
+        </button>
+      </div>
+
+      <div id="recruitmentsList" class="grid">
+        <div class="loading glass">
+          Loading recruitment...
+        </div>
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS -->
     <section id="announcements" class="section">
       <div class="head">
         <div>
-          <span class="eyebrow">LATEST</span>
+          <span class="eyebrow">LATEST NEWS</span>
           <h2>Announcements</h2>
         </div>
+
+        <button id="refreshAnnouncements" class="secondary">
+          Refresh
+        </button>
       </div>
 
-      <div id="announcementsList" class="stack"></div>
+      <div id="announcementsList" class="stack">
+        <div class="loading glass">
+          Loading announcements...
+        </div>
+      </div>
     </section>
 
+    <!-- EVENTS -->
+    <section id="events" class="section">
+      <div class="head">
+        <div>
+          <span class="eyebrow">ROKUHARA ACTIVITY</span>
+          <h2>Events</h2>
+        </div>
+
+        <button id="refreshEvents" class="secondary">
+          Refresh
+        </button>
+      </div>
+
+      <div id="eventsGrid" class="grid">
+        <div class="loading glass">
+          Loading events...
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY -->
     <section id="community" class="section split">
       <div class="panel glass">
         <span class="eyebrow">COMMUNITY HUB</span>
-        <h2>Tempat kumpulnya Circle Rokuhara.</h2>
-        <p>Join komunitas dan mulai bangun Circle lu.</p>
+
+        <h2>
+          Tempat kumpulnya Circle Rokuhara.
+        </h2>
+
+        <p>
+          Join komunitas dan mulai bangun Circle lu.
+        </p>
 
         <div class="actions">
-          <a id="discord" class="primary" target="_blank">Discord</a>
-          <a id="whatsapp" class="secondary" target="_blank">WhatsApp</a>
+          <a
+            id="discord"
+            class="primary"
+            target="_blank"
+            rel="noopener"
+          >
+            Discord
+          </a>
+
+          <a
+            id="whatsapp"
+            class="secondary"
+            target="_blank"
+            rel="noopener"
+          >
+            WhatsApp
+          </a>
         </div>
       </div>
 
       <div class="panel glass">
         <span class="eyebrow">RULES</span>
+
         <h2>Rokuhara Rules</h2>
+
         <ul>
           <li>Respect member lain.</li>
           <li>Jangan spam atau menipu.</li>
           <li>Recruitment harus jelas.</li>
           <li>Ikuti arahan moderator/admin.</li>
+          <li>Jangan menyalahgunakan komunitas.</li>
         </ul>
       </div>
     </section>
 
+    <!-- ACTIVITY -->
+    <section class="section">
+      <div class="head">
+        <div>
+          <span class="eyebrow">LIVE COMMUNITY</span>
+          <h2>Activity Feed</h2>
+        </div>
+      </div>
+
+      <div id="activityList" class="stack">
+        <div class="loading glass">
+          Loading activity...
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
     <section id="team" class="section">
       <div class="head">
         <div>
@@ -153,13 +304,29 @@
         <h2>Login</h2>
         <p>Masuk ke akun Rokuhara lu.</p>
 
-        <label>Email</label>
-        <input id="loginEmail" type="email" placeholder="email@example.com">
+        <label for="loginEmail">Email</label>
+        <input
+          id="loginEmail"
+          type="email"
+          autocomplete="email"
+          placeholder="email@example.com"
+        >
 
-        <label>Password</label>
-        <input id="loginPassword" type="password" placeholder="••••••••">
+        <label for="loginPassword">Password</label>
+        <input
+          id="loginPassword"
+          type="password"
+          autocomplete="current-password"
+          placeholder="••••••••"
+        >
 
-        <button id="submitLogin" class="primary full">Login</button>
+        <button id="submitLogin" class="primary full">
+          Login
+        </button>
+
+        <button id="forgotPasswordBtn" class="text-button">
+          Forgot password?
+        </button>
 
         <p class="switch-auth">
           Belum punya akun?
@@ -172,34 +339,82 @@
         <h2>Create Account</h2>
         <p>Bikin identitas Rokuhara lu.</p>
 
-        <label>Username</label>
-        <input id="registerUsername" type="text" placeholder="riyzz">
+        <label for="registerUsername">Username</label>
+        <input
+          id="registerUsername"
+          type="text"
+          maxlength="24"
+          autocomplete="username"
+          placeholder="riyzz"
+        >
 
-        <label>Display Name</label>
-        <input id="registerDisplayName" type="text" placeholder="Riyzz">
+        <label for="registerDisplayName">Display Name</label>
+        <input
+          id="registerDisplayName"
+          type="text"
+          maxlength="40"
+          placeholder="Riyzz"
+        >
 
-        <label>Email</label>
-        <input id="registerEmail" type="email" placeholder="email@example.com">
+        <label for="registerEmail">Email</label>
+        <input
+          id="registerEmail"
+          type="email"
+          autocomplete="email"
+          placeholder="email@example.com"
+        >
 
-        <label>Password</label>
-        <input id="registerPassword" type="password" placeholder="Minimal 6 karakter">
+        <label for="registerPassword">Password</label>
+        <input
+          id="registerPassword"
+          type="password"
+          autocomplete="new-password"
+          placeholder="Minimal 6 karakter"
+        >
 
-        <button id="submitRegister" class="primary full">Create Account</button>
+        <button id="submitRegister" class="primary full">
+          Create Account
+        </button>
 
         <p class="switch-auth">
           Sudah punya akun?
           <button id="switchLogin">Login</button>
         </p>
       </div>
+
+      <div id="forgotForm" class="hidden">
+        <span class="eyebrow">ACCOUNT</span>
+        <h2>Reset Password</h2>
+        <p>Kirim link reset password ke email lu.</p>
+
+        <label for="forgotEmail">Email</label>
+        <input
+          id="forgotEmail"
+          type="email"
+          placeholder="email@example.com"
+        >
+
+        <button id="submitForgot" class="primary full">
+          Send Reset Link
+        </button>
+
+        <p class="switch-auth">
+          <button id="backToLogin">
+            Back to Login
+          </button>
+        </p>
+      </div>
     </div>
   </div>
 
+  <!-- PROFILE MODAL -->
   <div id="profileModal" class="modal hidden">
     <div class="modal-box glass profile-box">
       <button id="closeProfile" class="modal-close">×</button>
 
       <span class="eyebrow">ROKUHARA PROFILE</span>
-      <div class="profile-avatar" id="profileAvatar">R</div>
+
+      <div id="profileAvatar" class="profile-avatar">R</div>
 
       <h2 id="profileName">Rokuhara Member</h2>
       <p id="profileUsername">@username</p>
@@ -213,44 +428,278 @@
         Belum ada bio.
       </p>
 
-      <button id="editProfileBtn" class="secondary full">
-        Edit Profile
-      </button>
-
-      <div id="editProfileForm" class="edit-profile-form hidden">
-        <label>Display Name</label>
-        <input id="editDisplayName" type="text" maxlength="40" placeholder="Display name">
-
-        <label>Bio</label>
-        <textarea id="editBio" maxlength="160" rows="4" placeholder="Ceritain sedikit tentang lu..."></textarea>
-
-        <div class="actions">
-          <button id="saveProfileBtn" class="primary">Save Profile</button>
-          <button id="cancelProfileEdit" class="secondary">Cancel</button>
-        </div>
-      </div>
-
       <div class="profile-meta">
         <div>
           <small>ROLE</small>
           <strong id="profileRole">Member</strong>
         </div>
+
         <div>
           <small>JOINED</small>
           <strong id="profileJoined">-</strong>
         </div>
       </div>
 
-      <button id="profileLogout" class="secondary full">
-        Logout
+      <div class="profile-actions">
+        <button id="editProfileBtn" class="secondary">
+          Edit Profile
+        </button>
+
+        <button id="profileLogout" class="secondary">
+          Logout
+        </button>
+      </div>
+
+      <div id="editProfileForm" class="edit-profile-form hidden">
+        <label for="editDisplayName">Display Name</label>
+
+        <input
+          id="editDisplayName"
+          type="text"
+          maxlength="40"
+          placeholder="Display name"
+        >
+
+        <label for="editBio">Bio</label>
+
+        <textarea
+          id="editBio"
+          maxlength="160"
+          rows="4"
+          placeholder="Ceritain sedikit tentang lu..."
+        ></textarea>
+
+        <div class="actions">
+          <button id="saveProfileBtn" class="primary">
+            Save
+          </button>
+
+          <button id="cancelProfileEdit" class="secondary">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CIRCLE MODAL -->
+  <div id="circleModal" class="modal hidden">
+    <div class="modal-box glass">
+      <button id="closeCircle" class="modal-close">×</button>
+
+      <span class="eyebrow">ROKUHARA CIRCLE</span>
+
+      <h2 id="circleModalTitle">Circle</h2>
+
+      <p id="circleModalDescription">-</p>
+
+      <div class="circle-modal-info">
+        <span id="circleModalTag">CIRCLE</span>
+        <strong id="circleModalMembers">0 members</strong>
+      </div>
+
+      <div id="circleModalRules" class="info-box">
+        Belum ada rules.
+      </div>
+
+      <button id="circleJoinBtn" class="primary full">
+        Join Circle
       </button>
+
+      <button id="circleMembersBtn" class="secondary full">
+        View Members
+      </button>
+    </div>
+  </div>
+
+  <!-- MEMBERS MODAL -->
+  <div id="membersModal" class="modal hidden">
+    <div class="modal-box glass">
+      <button id="closeMembers" class="modal-close">×</button>
+
+      <span class="eyebrow">CIRCLE MEMBERS</span>
+
+      <h2 id="membersTitle">Members</h2>
+
+      <div id="membersList" class="member-list">
+        Loading members...
+      </div>
+    </div>
+  </div>
+
+  <!-- RECRUITMENT MODAL -->
+  <div id="recruitmentModal" class="modal hidden">
+    <div class="modal-box glass">
+      <button id="closeRecruitment" class="modal-close">×</button>
+
+      <span class="eyebrow">RECRUITMENT</span>
+
+      <h2 id="recruitmentModalTitle">
+        Apply Recruitment
+      </h2>
+
+      <p id="recruitmentModalDescription">-</p>
+
+      <div class="recruitment-requirements">
+        <small>REQUIREMENTS</small>
+        <p id="recruitmentModalRequirements">
+          Tidak ada requirements.
+        </p>
+      </div>
+
+      <label for="applicationMessage">Message</label>
+
+      <textarea
+        id="applicationMessage"
+        rows="4"
+        maxlength="300"
+        placeholder="Kenapa lu mau join Circle ini?"
+      ></textarea>
+
+      <button id="submitApplication" class="primary full">
+        Send Application
+      </button>
+    </div>
+  </div>
+
+  <!-- EVENT MODAL -->
+  <div id="eventModal" class="modal hidden">
+    <div class="modal-box glass">
+      <button id="closeEvent" class="modal-close">×</button>
+
+      <span class="eyebrow">ROKUHARA EVENT</span>
+
+      <h2 id="eventModalTitle">Event</h2>
+
+      <p id="eventModalDescription">-</p>
+
+      <div class="event-detail">
+        <span>DATE</span>
+        <strong id="eventModalDate">-</strong>
+      </div>
+
+      <div class="event-detail">
+        <span>LOCATION</span>
+        <strong id="eventModalLocation">-</strong>
+      </div>
+
+      <div class="event-detail">
+        <span>PARTICIPANTS</span>
+        <strong id="eventModalParticipants">0</strong>
+      </div>
+
+      <button id="eventJoinBtn" class="primary full">
+        Join Event
+      </button>
+    </div>
+  </div>
+
+  <!-- CHAT MODAL -->
+  <div id="chatModal" class="modal hidden">
+    <div class="modal-box glass chat-box">
+      <button id="closeChat" class="modal-close">×</button>
+
+      <span class="eyebrow">COMMUNITY CHAT</span>
+
+      <h2 id="chatTitle">Chat</h2>
+
+      <div id="chatMessages" class="chat-messages">
+        <div class="loading">Loading messages...</div>
+      </div>
+
+      <div class="chat-input">
+        <input
+          id="chatInput"
+          type="text"
+          maxlength="500"
+          placeholder="Tulis pesan..."
+        >
+
+        <button id="sendChat" class="primary">
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-box glass">
+      <button id="closeSettings" class="modal-close">×</button>
+
+      <span class="eyebrow">ACCOUNT SETTINGS</span>
+
+      <h2>Settings</h2>
+
+      <div class="settings-list">
+        <label class="setting-row">
+          <span>
+            <strong>Notifications</strong>
+            <small>Aktifkan notifikasi komunitas.</small>
+          </span>
+          <input id="settingNotifications" type="checkbox">
+        </label>
+
+        <label class="setting-row">
+          <span>
+            <strong>Public Profile</strong>
+            <small>Izinkan profile dilihat member lain.</small>
+          </span>
+          <input id="settingPublicProfile" type="checkbox">
+        </label>
+
+        <label class="setting-row">
+          <span>
+            <strong>Show Online</strong>
+            <small>Tampilkan status online lu.</small>
+          </span>
+          <input id="settingShowOnline" type="checkbox">
+        </label>
+      </div>
+
+      <button id="saveSettings" class="primary full">
+        Save Settings
+      </button>
+    </div>
+  </div>
+
+  <!-- ADMIN MODAL -->
+  <div id="adminModal" class="modal hidden">
+    <div class="modal-box glass admin-box">
+      <button id="closeAdmin" class="modal-close">×</button>
+
+      <span class="eyebrow">ROKUHARA CONTROL</span>
+
+      <h2>Admin Panel</h2>
+
+      <div class="admin-grid">
+        <button id="adminAnnouncements" class="secondary">
+          Announcements
+        </button>
+
+        <button id="adminRecruitments" class="secondary">
+          Recruitment
+        </button>
+
+        <button id="adminEvents" class="secondary">
+          Events
+        </button>
+
+        <button id="adminUsers" class="secondary">
+          Users
+        </button>
+      </div>
+
+      <div id="adminContent" class="admin-content">
+        Pilih menu admin.
+      </div>
     </div>
   </div>
 
   <div id="toast"></div>
 
   <footer>
-    © Rokuhara Community
+    <div>© Rokuhara Community</div>
     <span>Free Fire Circle Community</span>
   </footer>
 
