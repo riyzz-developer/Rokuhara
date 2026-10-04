@@ -1,8 +1,207 @@
-<!doctype html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rokuhara — Free Fire Circle Community</title><meta name="description" content="Rokuhara Free Fire Circle Community"><link rel="icon" href="/assets/logo/rokhuhara-logo.png"><link rel="stylesheet" href="/style.css"></head><body>
-<div class="orb a"></div><div class="orb b"></div>
-<header class="top glass"><a class="brand" href="#"><img src="/assets/logo/rokhuhara-logo.png" onerror="this.style.display='none'"><b>ROKUHARA</b></a><nav><a href="#circles">Circles</a><a href="#announcements">Announcements</a><a href="#community">Community</a><a href="#team">Team</a></nav><button id="connect" class="ghost">Connect</button></header>
-<main><section class="hero"><div><span class="eyebrow">FREE FIRE • CIRCLE • COMMUNITY</span><h1>Build your circle.<br><span>Play together.</span></h1><p>Community hub Rokuhara buat cari Circle, recruitment, announcement, dan mabar bareng komunitas Free Fire.</p><div class="actions"><a class="primary" href="#circles">Explore Circles</a><a class="secondary" href="#community">Join Community</a></div><div class="status"><i></i><span>Community Online</span><span id="dbStatus">Database: setup required</span></div></div><div class="hero-card glass"><img src="/assets/logo/rokhuhara-logo.png" onerror="this.style.opacity='.15'" alt="Rokuhara logo"><small>ROKUHARA ID</small><strong>#ROKUHARA</strong></div></section>
-<section id="circles" class="section"><div class="head"><div><span class="eyebrow">COMMUNITY</span><h2>Featured Circles</h2></div><button id="refresh" class="secondary">Refresh</button></div><div id="circlesGrid" class="grid"></div></section>
-<section id="announcements" class="section"><div class="head"><div><span class="eyebrow">LATEST</span><h2>Announcements</h2></div></div><div id="announcementsList" class="stack"></div></section>
-<section id="community" class="section split"><div class="panel glass"><span class="eyebrow">COMMUNITY HUB</span><h2>Tempat kumpulnya Circle Rokuhara.</h2><p>Atur link Discord dan WhatsApp dari <code>public/config.js</code>.</p><div class="actions"><a id="discord" class="primary" target="_blank">Discord</a><a id="whatsapp" class="secondary" target="_blank">WhatsApp</a></div></div><div class="panel glass"><span class="eyebrow">RULES</span><h2>Rokuhara Rules</h2><ul><li>Respect member lain.</li><li>Jangan spam atau menipu.</li><li>Recruitment harus jelas.</li><li>Ikuti arahan moderator/admin.</li></ul></div></section>
-<section id="team" class="section"><div class="head"><div><span class="eyebrow">STAFF</span><h2>Rokuhara Team</h2></div></div><div class="grid team"><article class="glass"><div class="avatar">M</div><h3>Rapaa</h3><p>Momos • Owner / Group Owner</p><small>Community & group management</small></article><article class="glass"><div class="avatar">V</div><h3>Vinoo</h3><p>Vinz / Vinos • Community/Event Admin</p><small>Free Fire activity & events</small></article><article class="glass"><div class="avatar">R</div><h3>Riyoo</h3><p>Riyzz • Founder / Developer</p><small>Web, community editor & full technical access</small></article></div></section></main><footer>© Rokuhara Community <span>Free Fire Circle Community</span></footer><div id="toast"></div><script src="/config.js"></script><script type="module" src="/app.js"></script></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rokuhara — Free Fire Community</title>
+  <meta name="description" content="Rokuhara Free Fire Circle Community">
+  <link rel="icon" href="/assets/logo/rokhuhara-logo.png">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+
+  <header class="top glass">
+    <a class="brand" href="#">
+      <img src="/assets/logo/rokhuhara-logo.png" alt="Rokuhara">
+      <b>ROKUHARA</b>
+    </a>
+
+    <nav>
+      <a href="#circles">Circles</a>
+      <a href="#announcements">Announcements</a>
+      <a href="#community">Community</a>
+      <a href="#team">Team</a>
+    </nav>
+
+    <div class="auth-actions">
+      <button id="loginBtn" class="ghost">Login</button>
+      <button id="registerBtn" class="primary small">Register</button>
+      <button id="profileBtn" class="ghost hidden">Profile</button>
+      <button id="logoutBtn" class="ghost hidden">Logout</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <span class="eyebrow">FREE FIRE • CIRCLE • COMMUNITY</span>
+        <h1>Build your circle.<br><span>Play together.</span></h1>
+        <p>
+          Tempat komunitas Rokuhara buat cari Circle, recruitment,
+          announcement, dan mabar bareng.
+        </p>
+
+        <div class="actions">
+          <a class="primary" href="#circles">Explore Circles</a>
+          <button id="heroRegister" class="secondary">Create Account</button>
+        </div>
+
+        <div class="status">
+          <i></i>
+          <span>Community Online</span>
+          <span id="dbStatus">Database: connecting...</span>
+        </div>
+      </div>
+
+      <div class="hero-card glass">
+        <img src="/assets/logo/rokhuhara-logo.png" alt="Rokuhara logo">
+        <small>ROKUHARA ID</small>
+        <strong id="heroRokId">#ROKUHARA</strong>
+      </div>
+    </section>
+
+    <section id="circles" class="section">
+      <div class="head">
+        <div>
+          <span class="eyebrow">COMMUNITY</span>
+          <h2>Featured Circles</h2>
+        </div>
+        <button id="refresh" class="secondary">Refresh</button>
+      </div>
+
+      <div id="circlesGrid" class="grid"></div>
+    </section>
+
+    <section id="announcements" class="section">
+      <div class="head">
+        <div>
+          <span class="eyebrow">LATEST</span>
+          <h2>Announcements</h2>
+        </div>
+      </div>
+
+      <div id="announcementsList" class="stack"></div>
+    </section>
+
+    <section id="community" class="section split">
+      <div class="panel glass">
+        <span class="eyebrow">COMMUNITY HUB</span>
+        <h2>Tempat kumpulnya Circle Rokuhara.</h2>
+        <p>Join komunitas dan mulai bangun Circle lu.</p>
+
+        <div class="actions">
+          <a id="discord" class="primary" target="_blank">Discord</a>
+          <a id="whatsapp" class="secondary" target="_blank">WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="panel glass">
+        <span class="eyebrow">RULES</span>
+        <h2>Rokuhara Rules</h2>
+        <ul>
+          <li>Respect member lain.</li>
+          <li>Jangan spam atau menipu.</li>
+          <li>Recruitment harus jelas.</li>
+          <li>Ikuti arahan moderator/admin.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="team" class="section">
+      <div class="head">
+        <div>
+          <span class="eyebrow">STAFF</span>
+          <h2>Rokuhara Team</h2>
+        </div>
+      </div>
+
+      <div class="grid team">
+        <article class="glass">
+          <div class="avatar">M</div>
+          <h3>Rapaa</h3>
+          <p>Momos • Owner / Group Owner</p>
+          <small>Community & group management</small>
+        </article>
+
+        <article class="glass">
+          <div class="avatar">V</div>
+          <h3>Vinoo</h3>
+          <p>Vinz / Vinos • Community/Event Admin</p>
+          <small>Free Fire activity & events</small>
+        </article>
+
+        <article class="glass">
+          <div class="avatar">R</div>
+          <h3>Riyoo</h3>
+          <p>Riyzz • Founder / Developer</p>
+          <small>Web, community editor & technical access</small>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- AUTH MODAL -->
+  <div id="authModal" class="modal hidden">
+    <div class="modal-box glass">
+      <button id="closeAuth" class="modal-close">×</button>
+
+      <div id="loginForm">
+        <span class="eyebrow">WELCOME BACK</span>
+        <h2>Login</h2>
+        <p>Masuk ke akun Rokuhara lu.</p>
+
+        <label>Email</label>
+        <input id="loginEmail" type="email" placeholder="email@example.com">
+
+        <label>Password</label>
+        <input id="loginPassword" type="password" placeholder="••••••••">
+
+        <button id="submitLogin" class="primary full">Login</button>
+
+        <p class="switch-auth">
+          Belum punya akun?
+          <button id="switchRegister">Register</button>
+        </p>
+      </div>
+
+      <div id="registerForm" class="hidden">
+        <span class="eyebrow">JOIN ROKUHARA</span>
+        <h2>Create Account</h2>
+        <p>Bikin identitas Rokuhara lu.</p>
+
+        <label>Username</label>
+        <input id="registerUsername" type="text" placeholder="riyzz">
+
+        <label>Display Name</label>
+        <input id="registerDisplayName" type="text" placeholder="Riyzz">
+
+        <label>Email</label>
+        <input id="registerEmail" type="email" placeholder="email@example.com">
+
+        <label>Password</label>
+        <input id="registerPassword" type="password" placeholder="Minimal 6 karakter">
+
+        <button id="submitRegister" class="primary full">Create Account</button>
+
+        <p class="switch-auth">
+          Sudah punya akun?
+          <button id="switchLogin">Login</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <footer>
+    © Rokuhara Community
+    <span>Free Fire Circle Community</span>
+  </footer>
+
+  <script src="/config.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

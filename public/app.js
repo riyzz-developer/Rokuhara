@@ -1,1 +1,271 @@
-import{createClient}from'https://esm.sh/@supabase/supabase-js@2';const c=window.ROKUHARA_CONFIG||{},ready=c.SUPABASE_URL?.startsWith('http')&&c.SUPABASE_ANON_KEY?.length>20;const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[x]));const fallback=[{name:'Rokuhara Main',description:'Circle utama Rokuhara Community.',member_count:128,tag:'MAIN'},{name:'Rokuhara Elite',description:'Circle buat member aktif push bareng.',member_count:64,tag:'ELITE'},{name:'Rokuhara Casual',description:'Santai, mabar, dan cari teman baru.',member_count:91,tag:'CASUAL'}];function circles(rows){$('#circlesGrid').innerHTML=rows.map(x=>`<article class="glass"><span class="card-tag">${esc(x.tag||'CIRCLE')}</span><h3>${esc(x.name)}</h3><p>${esc(x.description||'Rokuhara Circle')}</p><small>${Number(x.member_count||0)} members</small></article>`).join('')}function anns(rows){$('#announcementsList').innerHTML=rows.length?rows.map(x=>`<article class="announcement glass"><span class="eyebrow">${new Date(x.created_at).toLocaleString('id-ID')}</span><h3>${esc(x.title)}</h3><p>${esc(x.content)}</p></article>`).join(''):`<article class="announcement glass"><span>Belum ada announcement.</span></article>`}$('#discord').href=c.DISCORD_URL||'#';$('#whatsapp').href=c.WHATSAPP_URL||'#';let sb=null;async function load(){if(!ready){circles(fallback);anns([]);return}sb=createClient(c.SUPABASE_URL,c.SUPABASE_ANON_KEY);$('#dbStatus').textContent='Database: connected';const[a,b]=await Promise.all([sb.from('circles').select('*').order('created_at',{ascending:false}),sb.from('announcements').select('*').order('created_at',{ascending:false}).limit(20)]);circles(a.data?.length?a.data:fallback);anns(b.data||[]);if(!window.__sub){window.__sub=true;sb.channel('rokuhara-live').on('postgres_changes',{event:'*',schema:'public',table:'announcements'},load).on('postgres_changes',{event:'*',schema:'public',table:'circles'},load).subscribe()}}$('#refresh').onclick=load;$('#connect').onclick=()=>{location.hash='community';toast('Pilih Discord atau WhatsApp untuk join.')};function toast(x){let t=$('#toast');t.textContent=x;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}load();
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const config = window.ROKUHARA_CONFIG || {};
+const supabase = createClient(
+  config.SUPABASE_URL,
+  config.SUPABASE_ANON_KEY
+);
+
+const $ = (selector) => document.querySelector(selector);
+
+const esc = (value) =>
+  String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }[char]));
+
+function toast(message) {
+  const el = $('#toast');
+  el.textContent = message;
+  el.classList.add('show');
+
+  setTimeout(() => {
+    el.classList.remove('show');
+  }, 2500);
+}
+
+function openAuth(mode = 'login') {
+  $('#authModal').classList.remove('hidden');
+  setAuthMode(mode);
+}
+
+function closeAuth() {
+  $('#authModal').classList.add('hidden');
+}
+
+function setAuthMode(mode) {
+  const login = mode === 'login';
+
+  $('#loginForm').classList.toggle('hidden', !login);
+  $('#registerForm').classList.toggle('hidden', login);
+}
+
+function updateAuthUI(user, profile = null) {
+  const loggedIn = !!user;
+
+  $('#loginBtn').classList.toggle('hidden', loggedIn);
+  $('#registerBtn').classList.toggle('hidden', loggedIn);
+  $('#profileBtn').classList.toggle('hidden', !loggedIn);
+  $('#logoutBtn').classList.toggle('hidden', !loggedIn);
+
+  if (profile?.rok_id) {
+    $('#heroRokId').textContent = `#${profile.rok_id}`;
+  } else {
+    $('#heroRokId').textContent = '#ROKUHARA';
+  }
+
+  if (loggedIn) {
+    $('#profileBtn').textContent =
+      profile?.display_name ||
+      profile?.username ||
+      user.email ||
+      'Profile';
+  }
+}
+
+async function loadProfile(user) {
+  if (!user) {
+    updateAuthUI(null);
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Profile error:', error);
+    updateAuthUI(user);
+    return null;
+  }
+
+  updateAuthUI(user, data);
+  return data;
+}
+
+async function register() {
+  const username = $('#registerUsername').value.trim();
+  const displayName = $('#registerDisplayName').value.trim();
+  const email = $('#registerEmail').value.trim();
+  const password = $('#registerPassword').value;
+
+  if (!username || !displayName || !email || !password) {
+    toast('Semua field wajib diisi.');
+    return;
+  }
+
+  if (password.length < 6) {
+    toast('Password minimal 6 karakter.');
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        username,
+        display_name: displayName
+      }
+    }
+  });
+
+  if (error) {
+    toast(error.message);
+    return;
+  }
+
+  if (!data.user) {
+    toast('Register gagal.');
+    return;
+  }
+
+
+
+  toast('Akun berhasil dibuat!');
+  closeAuth();
+
+  await loadProfile(data.user);
+}
+
+async function login() {
+  const email = $('#loginEmail').value.trim();
+  const password = $('#loginPassword').value;
+
+  if (!email || !password) {
+    toast('Email dan password wajib diisi.');
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    toast(error.message);
+    return;
+  }
+
+  toast('Login berhasil!');
+  closeAuth();
+
+  await loadProfile(data.user);
+}
+
+async function logout() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    toast(error.message);
+    return;
+  }
+
+  updateAuthUI(null);
+  toast('Berhasil logout.');
+}
+
+async function loadCircles() {
+  const { data, error } = await supabase
+    .from('circles')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  $('#circlesGrid').innerHTML = (data || []).map((circle) => `
+    <article class="glass">
+      <span class="card-tag">${esc(circle.tag || 'CIRCLE')}</span>
+      <h3>${esc(circle.name)}</h3>
+      <p>${esc(circle.description || 'Rokuhara Circle')}</p>
+      <small>${Number(circle.member_count || 0)} members</small>
+    </article>
+  `).join('');
+}
+
+async function loadAnnouncements() {
+  const { data, error } = await supabase
+    .from('announcements')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  $('#announcementsList').innerHTML = data?.length
+    ? data.map((item) => `
+        <article class="announcement glass">
+          <span class="eyebrow">
+            ${new Date(item.created_at).toLocaleString('id-ID')}
+          </span>
+          <h3>${esc(item.title)}</h3>
+          <p>${esc(item.content)}</p>
+        </article>
+      `).join('')
+    : `
+      <article class="announcement glass">
+        <span>Belum ada announcement.</span>
+      </article>
+    `;
+}
+
+async function init() {
+  $('#dbStatus').textContent = 'Database: connecting...';
+
+  const { data: { session } } = await supabase.auth.getSession();
+
+  $('#dbStatus').textContent = 'Database: connected';
+
+  await Promise.all([
+    loadCircles(),
+    loadAnnouncements(),
+    loadProfile(session?.user || null)
+  ]);
+
+  supabase.auth.onAuthStateChange(async (_event, sessionState) => {
+    await loadProfile(sessionState?.user || null);
+  });
+}
+
+$('#loginBtn').onclick = () => openAuth('login');
+$('#registerBtn').onclick = () => openAuth('register');
+$('#heroRegister').onclick = () => openAuth('register');
+$('#closeAuth').onclick = closeAuth;
+
+$('#switchRegister').onclick = () => setAuthMode('register');
+$('#switchLogin').onclick = () => setAuthMode('login');
+
+$('#submitLogin').onclick = login;
+$('#submitRegister').onclick = register;
+$('#logoutBtn').onclick = logout;
+
+$('#refresh').onclick = async () => {
+  await Promise.all([
+    loadCircles(),
+    loadAnnouncements()
+  ]);
+
+  toast('Data diperbarui.');
+};
+
+$('#discord').href = config.DISCORD_URL || '#';
+$('#whatsapp').href = config.WHATSAPP_URL || '#';
+
+$('#authModal').addEventListener('click', (event) => {
+  if (event.target.id === 'authModal') {
+    closeAuth();
+  }
+});
+
+init();
